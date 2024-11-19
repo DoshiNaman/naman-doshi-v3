@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://naman-doshi.vercel.app
+
+# Sitemaps
+Sitemap: https://naman-doshi.vercel.app/sitemap.xml
