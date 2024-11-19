@@ -55,7 +55,7 @@ export function FooterDock() {
     },
   ];
   return (
-    <div className="fixed md:bottom-10 max-md:top-10">
+    <div className="fixed md:bottom-10 max-md:top-10 z-[50]">
       <div className="flex items-end justify-center h-auto w-full">
         <FloatingDock
           // only for demo, remove for production
