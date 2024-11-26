@@ -1,6 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { useRef } from "react";
+import gsap from "gsap";
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid";
 import {
   IconBoxAlignRightFilled,
@@ -65,85 +66,174 @@ export function BentoGridThirdDemo() {
   );
 }
 
+// const SkeletonOne = () => {
+//   const variants = {
+//     initial: {
+//       x: 0,
+//     },
+//     animate: {
+//       x: 10,
+//       rotate: 5,
+//       transition: {
+//         duration: 0.2,
+//       },
+//     },
+//   };
+//   const variantsSecond = {
+//     initial: {
+//       x: 0,
+//     },
+//     animate: {
+//       x: -10,
+//       rotate: -5,
+//       transition: {
+//         duration: 0.2,
+//       },
+//     },
+//   };
+
+//   return (
+//     <motion.div
+//       initial="initial"
+//       whileHover="animate"
+//       className="flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-col space-y-2"
+//     >
+//       <motion.div
+//         variants={variants}
+//         className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2  items-center space-x-2 bg-white dark:bg-black"
+//       >
+//         <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
+//         <div className="w-full pl-2 text-sm color-white bg-gray-100 h-5 rounded-full dark:bg-neutral-900">
+//           Attribute
+//         </div>
+//       </motion.div>
+//       <motion.div
+//         variants={variantsSecond}
+//         className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center space-x-2 w-3/4 ml-auto bg-white dark:bg-black"
+//       >
+//         <div className="w-full bg-gray-100 h-5 text-right pr-2 text-sm color-white rounded-full dark:bg-neutral-900">
+//           {" "}
+//           Based
+//         </div>
+//         <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
+//       </motion.div>
+//       <motion.div
+//         variants={variants}
+//         className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center space-x-2 bg-white dark:bg-black"
+//       >
+//         <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
+//         <div className="w-full pl-2 text-sm color-white bg-gray-100 h-5 rounded-full dark:bg-neutral-900">
+//           Access
+//         </div>
+//       </motion.div>
+//       <motion.div
+//         variants={variantsSecond}
+//         className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center space-x-2 w-3/4 ml-auto bg-white dark:bg-black"
+//       >
+//         <div className="w-full bg-gray-100 h-5 text-right pr-2 text-sm color-white rounded-full dark:bg-neutral-900">
+//           Control
+//         </div>
+//         <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
+//       </motion.div>
+//       <motion.div
+//         variants={variants}
+//         className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center space-x-2 bg-white dark:bg-black"
+//       >
+//         <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
+//         <div className="w-full pl-2 text-sm color-white bg-gray-100 h-5 rounded-full dark:bg-neutral-900">
+//           System
+//         </div>
+//       </motion.div>
+//     </motion.div>
+//   );
+// };
+
 const SkeletonOne = () => {
-  const variants = {
-    initial: {
-      x: 0,
-    },
-    animate: {
-      x: 10,
-      rotate: 5,
-      transition: {
-        duration: 0.2,
-      },
-    },
+  const frameRef = useRef(null);
+
+  const handleMouseMove = (e) => {
+    const { clientX, clientY } = e;
+    const element = frameRef.current;
+
+    if (!element) return;
+
+    const rect = element.getBoundingClientRect();
+    const xPos = clientX - rect.left;
+    const yPos = clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((yPos - centerY) / centerY) * -10;
+    const rotateY = ((xPos - centerX) / centerX) * 10;
+
+    gsap.to(element, {
+      duration: 0.3,
+      rotateX,
+      rotateY,
+      transformPerspective: 500,
+      ease: "power1.inOut",
+    });
   };
-  const variantsSecond = {
-    initial: {
-      x: 0,
-    },
-    animate: {
-      x: -10,
-      rotate: -5,
-      transition: {
-        duration: 0.2,
-      },
-    },
+
+  const handleMouseLeave = () => {
+    const element = frameRef.current;
+
+    if (element) {
+      gsap.to(element, {
+        duration: 0.3,
+        rotateX: 0,
+        rotateY: 0,
+        ease: "power1.inOut",
+      });
+    }
   };
 
   return (
-    <motion.div
-      initial="initial"
-      whileHover="animate"
-      className="flex flex-1 w-full h-full min-h-[6rem] dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex-col space-y-2"
-    >
-      <motion.div
-        variants={variants}
-        className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2  items-center space-x-2 bg-white dark:bg-black"
-      >
-        <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
-        <div className="w-full pl-2 text-sm color-white bg-gray-100 h-5 rounded-full dark:bg-neutral-900">
-          Attribute
+    <div className="relative md:size-full w-full h-[20vh]">
+      <div className="story-img-container">
+        <div className="story-img-mask">
+          <div className="story-img-content">
+            <video
+              ref={frameRef}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              onMouseUp={handleMouseLeave}
+              onMouseEnter={handleMouseLeave}
+              src="/videos/aui-goku.mp4"
+              alt="aui-goku"
+              className="object-cover object-center size-full"
+              loop
+              muted
+              autoPlay
+            />
+          </div>
         </div>
-      </motion.div>
-      <motion.div
-        variants={variantsSecond}
-        className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center space-x-2 w-3/4 ml-auto bg-white dark:bg-black"
-      >
-        <div className="w-full bg-gray-100 h-5 text-right pr-2 text-sm color-white rounded-full dark:bg-neutral-900">
-          {" "}
-          Based
-        </div>
-        <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
-      </motion.div>
-      <motion.div
-        variants={variants}
-        className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center space-x-2 bg-white dark:bg-black"
-      >
-        <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
-        <div className="w-full pl-2 text-sm color-white bg-gray-100 h-5 rounded-full dark:bg-neutral-900">
-          Access
-        </div>
-      </motion.div>
-      <motion.div
-        variants={variantsSecond}
-        className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center space-x-2 w-3/4 ml-auto bg-white dark:bg-black"
-      >
-        <div className="w-full bg-gray-100 h-5 text-right pr-2 text-sm color-white rounded-full dark:bg-neutral-900">
-          Control
-        </div>
-        <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
-      </motion.div>
-      <motion.div
-        variants={variants}
-        className="flex flex-row rounded-full border border-neutral-100 dark:border-white/[0.2] p-2 items-center space-x-2 bg-white dark:bg-black"
-      >
-        <div className="h-6 w-6 rounded-full bg-gradient-to-r from-pink-500 to-violet-500 flex-shrink-0" />
-        <div className="w-full pl-2 text-sm color-white bg-gray-100 h-5 rounded-full dark:bg-neutral-900">
-          System
-        </div>
-      </motion.div>
-    </motion.div>
+
+        {/* for the rounded corner */}
+        <svg
+          className="invisible absolute size-0"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <filter id="flt_tag">
+              <feGaussianBlur
+                in="SourceGraphic"
+                stdDeviation="8"
+                result="blur"
+              />
+              <feColorMatrix
+                in="blur"
+                mode="matrix"
+                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9"
+                result="flt_tag"
+              />
+              <feComposite in="SourceGraphic" in2="flt_tag" operator="atop" />
+            </filter>
+          </defs>
+        </svg>
+      </div>
+    </div>
   );
 };
 
@@ -190,7 +280,7 @@ const SkeletonThree = () => {
       <motion.div className="h-full w-full rounded-lg">
         <div className="flex justify-center items-center h-full w-full">
           <Image
-            src={"/profile-pic.png"}
+            src={"/images/profile-pic.webp"}
             width={100}
             height={100}
             className=""
@@ -304,7 +394,7 @@ const items = [
     title: (
       <Link
         target="_blank"
-        href={"https://abac-demo.vercel.app/"}
+        href={"https://dbz-super.vercel.app/"}
         className="flex gap-2 flex-wrap"
       >
         <span className="whitespace-nowrap">Checkout the Recent Project</span>

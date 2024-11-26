@@ -16,7 +16,7 @@ export const metadata = {
     siteName: "Naman Doshi Portfolio",
     images: [
       {
-        url: "https://naman-doshi.vercel.app/portfoliov3.png",
+        url: "https://naman-doshi.vercel.app/images/portfoliov3.webp",
         width: 1200,
         height: 630,
         alt: "Naman Doshi Portfolio",
@@ -29,7 +29,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Naman Doshi - Portfolio",
     description: "Frontend Developer and Designer.",
-    images: ["https://naman-doshi.vercel.app/portfoliov3.png"],
+    images: ["https://naman-doshi.vercel.app/images/portfoliov3.webp"],
   },
   icons: {
     icon: "/favicon_io/favicon.ico",
